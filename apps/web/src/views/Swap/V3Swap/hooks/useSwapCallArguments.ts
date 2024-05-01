@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Percent } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SwapRouter } from '@pancakeswap/smart-router'
+import { Percent, TradeType } from '@pancakeswap/sdk'
+import { SMART_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 
@@ -49,7 +49,7 @@ export function useSwapCallArguments(
     const swapRouterAddress = chainId ? SMART_ROUTER_ADDRESSES[chainId] : undefined
     if (!swapRouterAddress) return []
 
-    const { value, calldata } = SwapRouter.swapCallParameters(trade, {
+    const { value, calldata } = SwapRouter.swapCallParameters(trade as unknown as SmartRouterTrade<TradeType>, {
       fee: feeOptions,
       recipient,
       slippageTolerance: allowedSlippage,

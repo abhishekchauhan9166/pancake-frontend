@@ -24,9 +24,9 @@ export const CommitButton: React.FC<CommitButtonProps> = ({
 }) => {
   if (isMMOrder(order)) {
     return useUniversalRouter ? (
-      <MMCommitButtonV2 {...order} beforeCommit={beforeCommit} afterCommit={afterCommit} />
+      <MMCommitButtonV2 order={order} beforeCommit={beforeCommit} afterCommit={afterCommit} />
     ) : (
-      <MMCommitButton {...order} />
+      <MMCommitButton order={order} />
     )
   }
 

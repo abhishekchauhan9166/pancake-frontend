@@ -1,6 +1,5 @@
-import { Currency, TradeType } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
@@ -9,14 +8,12 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButtonV2 } from 'views/Swap/MMLinkPools/components/MMCommitButtonV2'
+import { MMOrder } from 'views/Swap/utils'
 import { useAccount } from 'wagmi'
-import { CommitButtonProps, MMCommitTrade } from '../types'
+import { CommitButtonProps } from '../types'
 
-const MMCommitButtonCompV2: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & CommitButtonProps> = ({
-  mmOrderBookTrade,
-  mmRFQTrade,
-  mmQuoteExpiryRemainingSec,
-  mmTradeInfo,
+const MMCommitButtonCompV2: React.FC<{ order: MMOrder } & CommitButtonProps> = ({
+  order,
   beforeCommit,
   afterCommit,
 }) => {
@@ -52,17 +49,15 @@ const MMCommitButtonCompV2: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> 
     <MMSwapCommitButtonV2
       beforeCommit={beforeCommit}
       afterCommit={afterCommit}
-      mmTradeInfo={mmTradeInfo}
+      order={order}
       showWrap={showWrap}
       swapIsUnsupported={swapIsUnsupported}
       account={account}
       onWrap={onWrap}
       currencies={currencies}
-      currencyBalances={mmOrderBookTrade?.currencyBalances}
+      currencyBalances={order?.mmOrderBookTrade?.currencyBalances}
       isExpertMode={isExpertMode}
-      mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
-      rfqTrade={mmRFQTrade}
-      swapInputError={mmOrderBookTrade?.inputError}
+      swapInputError={order.mmOrderBookTrade?.inputError}
       wrapType={wrapType}
       wrapInputError={wrapInputError}
       recipient={recipient}

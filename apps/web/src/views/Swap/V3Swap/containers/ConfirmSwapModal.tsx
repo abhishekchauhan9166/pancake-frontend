@@ -32,7 +32,6 @@ import { useWallchainStatus } from '../hooks/useWallchain'
 import { ApproveStepFlow } from './ApproveStepFlow'
 
 interface ConfirmSwapModalProps {
-  // isMM?: boolean
   isRFQReady?: boolean
   order?: InterfaceOrder | null
   originalOrder?: InterfaceOrder | null

@@ -9,9 +9,10 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
+import { MMOrder } from 'views/Swap/utils'
 import { useAccount } from 'wagmi'
 
-function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
+function MMCommitButtonComp({ order }: { order: MMOrder }) {
   const {
     typedValue,
     recipient,
@@ -40,8 +41,8 @@ function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemaini
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
 
   const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
-    mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
-    mmTradeInfo?.routerAddress,
+    order.mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT] ?? undefined,
+    order.mmTradeInfo?.routerAddress,
   )
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
@@ -63,6 +64,7 @@ function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemaini
 
   return (
     <MMSwapCommitButton
+      order={order}
       showWrap={showWrap}
       approval={approvalState}
       swapIsUnsupported={swapIsUnsupported}
@@ -72,11 +74,9 @@ function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemaini
       approveCallback={approveCallback}
       revokeCallback={revokeCallback}
       currencies={currencies}
-      currencyBalances={mmOrderBookTrade?.currencyBalances}
+      currencyBalances={order.mmOrderBookTrade!.currencyBalances}
       isExpertMode={isExpertMode}
-      mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
-      rfqTrade={mmRFQTrade}
-      swapInputError={mmOrderBookTrade?.swapInputError}
+      swapInputError={order?.mmOrderBookTrade?.inputError}
       wrapType={wrapType}
       wrapInputError={wrapInputError}
       recipient={recipient}
