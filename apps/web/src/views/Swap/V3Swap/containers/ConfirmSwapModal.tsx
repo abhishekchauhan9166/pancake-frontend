@@ -1,9 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { memo, useCallback, useMemo } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -23,6 +22,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
 import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from '../types'
 
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
@@ -32,10 +32,10 @@ import { useWallchainStatus } from '../hooks/useWallchain'
 import { ApproveStepFlow } from './ApproveStepFlow'
 
 interface ConfirmSwapModalProps {
-  isMM?: boolean
+  // isMM?: boolean
   isRFQReady?: boolean
-  trade?: SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType> | null
-  originalTrade?: SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType> | null
+  order?: InterfaceOrder | null
+  originalOrder?: InterfaceOrder | null
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
@@ -52,15 +52,14 @@ interface ConfirmSwapModalProps {
 }
 
 export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(function ConfirmSwapModalComp({
-  isMM,
-  trade,
+  order,
   txHash,
   confirmModalState,
   startSwapFlow,
   pendingModalSteps,
   isRFQReady,
   attemptingTxn,
-  originalTrade,
+  originalOrder,
   showApproveFlow,
   currencyBalances,
   swapErrorMessage,
@@ -76,14 +75,14 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const [wallchainStatus] = useWallchainStatus()
   const isBonus = useDebounce(wallchainStatus === 'found', 500)
 
-  const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
+  const token: Token | undefined = wrappedCurrency(order?.trade?.outputAmount?.currency, chainId)
 
   const showAddToWalletButton = useMemo(() => {
-    if (token && trade?.outputAmount?.currency) {
-      return !trade?.outputAmount?.currency?.isNative
+    if (token && order?.trade?.outputAmount?.currency) {
+      return !order?.trade?.outputAmount?.currency?.isNative
     }
     return false
-  }, [token, trade])
+  }, [token, order])
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
@@ -93,13 +92,20 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   }, [customOnDismiss, onDismiss])
 
   const topModal = useMemo(() => {
-    const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
-    const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
-    const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
-    const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
+    const currencyA = currencyBalances.INPUT?.currency ?? order?.trade?.inputAmount?.currency
+    const currencyB = currencyBalances.OUTPUT?.currency ?? order?.trade?.outputAmount?.currency
+    const amountA = formatAmount(order?.trade?.inputAmount, 6) ?? ''
+    const amountB = formatAmount(order?.trade?.outputAmount, 6) ?? ''
 
     if (confirmModalState === ConfirmModalStateV1.RESETTING_APPROVAL) {
-      return <ApproveModalContentV1 title={t('Reset Approval on USDT')} isMM={isMM} isBonus={isBonus} />
+      return (
+        <ApproveModalContentV1
+          title={t('Reset Approval on USDT')}
+          isX={isXOrder(order)}
+          isMM={isMMOrder(order)}
+          isBonus={isBonus}
+        />
+      )
     }
 
     if (
@@ -109,8 +115,9 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     ) {
       return (
         <ApproveModalContentV1
-          title={t('Enable spending %symbol%', { symbol: `${trade?.inputAmount?.currency?.symbol}` })}
-          isMM={isMM}
+          title={t('Enable spending %symbol%', { symbol: `${order?.trade?.inputAmount?.currency?.symbol}` })}
+          isX={isXOrder(order)}
+          isMM={isMMOrder(order)}
           isBonus={isBonus}
         />
       )
@@ -199,11 +206,10 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
 
     return (
       <TransactionConfirmSwapContent
-        isMM={isMM}
-        trade={trade}
+        order={order}
         recipient={recipient}
         isRFQReady={isRFQReady}
-        originalTrade={originalTrade}
+        originalOrder={originalOrder}
         allowedSlippage={allowedSlippage}
         currencyBalances={currencyBalances}
         onConfirm={startSwapFlow}
@@ -211,27 +217,26 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
       />
     )
   }, [
-    isMM,
-    isBonus,
-    trade,
-    txHash,
-    isRFQReady,
-    originalTrade,
-    attemptingTxn,
     currencyBalances,
+    confirmModalState,
     showApproveFlow,
     swapErrorMessage,
-    token,
-    chainId,
+    attemptingTxn,
+    txHash,
+    order,
     recipient,
+    isRFQReady,
+    originalOrder,
     allowedSlippage,
-    confirmModalState,
-    t,
-    handleDismiss,
     startSwapFlow,
     onAcceptChanges,
+    t,
+    isBonus,
+    handleDismiss,
     openSettingModal,
     showAddToWalletButton,
+    token,
+    chainId,
   ])
 
   const isShowingLoadingAnimation = useMemo(

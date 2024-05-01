@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Percent, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { ClassicOrder } from '@pancakeswap/price-api-sdk'
+import { Percent } from '@pancakeswap/sdk'
 import {
   PancakeSwapUniversalRouter,
   Permit2Signature,
@@ -28,7 +28,7 @@ interface SwapCall {
  * @param feeOptions the fee options to be applied to the trade.
  */
 export function useSwapCallArgumentsV2(
-  trade: SmartRouterTrade<TradeType> | undefined | null,
+  trade: ClassicOrder['trade'] | undefined | null,
   allowedSlippage: Percent,
   recipientAddressOrName: string | null | undefined,
   permitSignature: Permit2Signature | undefined,

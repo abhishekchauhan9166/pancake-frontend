@@ -1,6 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { ReactNode, useMemo } from 'react'
 
@@ -9,6 +7,7 @@ import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 
+import { ClassicOrder } from '@pancakeswap/price-api-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useSendSwapTransaction from './useSendSwapTransaction'
 
@@ -29,7 +28,7 @@ interface UseSwapCallbackReturns {
   reason?: string
 }
 interface UseSwapCallbackArgs {
-  trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
+  trade: ClassicOrder['trade'] | undefined | null // trade to execute, required
   deadline?: bigint
   feeOptions?: FeeOptions
   onWallchainDrop: () => void

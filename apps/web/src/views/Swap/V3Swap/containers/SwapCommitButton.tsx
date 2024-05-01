@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { TradeType } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SMART_ROUTER_ADDRESSES } from '@pancakeswap/smart-router'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
 import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
@@ -30,7 +29,11 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { warningSeverity } from 'utils/exchange'
 
+import { PriceOrder } from '@pancakeswap/price-api-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { isClassicOrder, isXOrder } from 'views/Swap/utils'
+import { waitForXOrderReceipt } from 'views/Swap/x/api'
+import { useSendXOrder } from 'views/Swap/x/useSendXOrder'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
 import { useConfirmModalState } from '../hooks/useConfirmModalState'
@@ -42,13 +45,13 @@ import { ConfirmSwapModal } from './ConfirmSwapModal'
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
-  trade?: SmartRouterTrade<TradeType>
-  tradeError?: Error
+  order?: PriceOrder
+  tradeError?: Error | null
   tradeLoading?: boolean
 }
 
 export const SwapCommitButton = memo(function SwapCommitButton({
-  trade,
+  order,
   tradeError,
   tradeLoading,
 }: SwapCommitButtonPropsType) {
@@ -73,15 +76,21 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
   const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
 
   const [deadline] = useTransactionDeadline()
-  const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
+  const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(
+    isClassicOrder(order) ? order.trade : undefined,
+    deadline,
+  )
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
   const routerAddress =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
-      : SMART_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId as keyof typeof SMART_ROUTER_ADDRESSES]
+      : isClassicOrder(order)
+      ? SMART_ROUTER_ADDRESSES[order.trade?.inputAmount?.currency?.chainId as keyof typeof SMART_ROUTER_ADDRESSES]
+      : undefined
+
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -98,11 +107,11 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     routerAddress,
   )
   const { priceImpactWithoutFee } = useMemo(
-    () => (!showWrap ? computeTradePriceBreakdown(trade) : {}),
-    [showWrap, trade],
+    () => (!showWrap ? computeTradePriceBreakdown(isClassicOrder(order) ? order.trade : undefined) : {}),
+    [showWrap, order],
   )
-  const swapInputError = useSwapInputError(trade, currencyBalances)
-  const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
+  const swapInputError = useSwapInputError(order, currencyBalances)
+  const parsedAmounts = useParsedAmounts(order?.trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
@@ -113,7 +122,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   }, [setApprovalSubmitted])
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: SmartRouterTrade<TradeType> | undefined
+    tradeToConfirm: PriceOrder | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
@@ -129,7 +138,13 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     error: swapCallbackError,
     reason: revertReason,
   } = useSwapCallback({
-    trade: isExpertMode ? trade : tradeToConfirm,
+    trade: isExpertMode
+      ? isClassicOrder(order)
+        ? order.trade
+        : undefined
+      : isClassicOrder(tradeToConfirm)
+      ? tradeToConfirm.trade
+      : undefined,
     deadline,
     onWallchainDrop,
     wallchainMasterInput,
@@ -143,6 +158,23 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       onUserInput(Field.INPUT, '')
     }
   }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
+
+  const { mutateAsync: sendXOrder } = useSendXOrder()
+
+  const handleXSwap = useCallback(async () => {
+    if (!isXOrder(order)) return
+    const xOrder = await sendXOrder({
+      chainId: order.trade.inputAmount.currency.chainId,
+      orderInfo: order.trade.orderInfo,
+    })
+    const receipt = await waitForXOrderReceipt(xOrder)
+    setSwapState({
+      attemptingTxn: true,
+      tradeToConfirm: order,
+      swapErrorMessage: undefined,
+      txHash: receipt.transactionHash ?? undefined,
+    })
+  }, [order, sendXOrder])
 
   const handleSwap = useCallback(async () => {
     if (
@@ -194,8 +226,8 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm, revertReason])
 
   const handleAcceptChanges = useCallback(() => {
-    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
-  }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
+    setSwapState({ tradeToConfirm: order, swapErrorMessage, txHash, attemptingTxn })
+  }, [attemptingTxn, swapErrorMessage, order, txHash, setSwapState])
   // End Handlers
 
   // warnings on slippage
@@ -224,22 +256,22 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     txHash,
     chainId,
     approval: approvalState,
-    approvalToken: trade?.inputAmount?.currency,
+    approvalToken: order?.trade?.inputAmount?.currency,
     isPendingError,
     isExpertMode,
     currentAllowance,
     approveCallback,
     revokeCallback,
-    onConfirm: handleSwap,
+    onConfirm: isXOrder(order) ? handleXSwap : handleSwap,
   })
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
-      trade={trade}
+      order={order}
       txHash={txHash}
       approval={approvalState}
       attemptingTxn={attemptingTxn}
-      originalTrade={tradeToConfirm}
+      originalOrder={tradeToConfirm}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
       confirmModalState={confirmModalState}
@@ -259,7 +291,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   const onSwapHandler = useCallback(() => {
     setSwapState({
-      tradeToConfirm: trade,
+      tradeToConfirm: order,
       attemptingTxn: false,
       swapErrorMessage: undefined,
       txHash: undefined,
@@ -270,7 +302,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [trade, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
+  }, [order, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
 
   // useEffect
   useEffect(() => {
@@ -287,7 +319,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // Reset approval flow if input currency changed
   useEffect(() => {
     setApprovalSubmitted(false)
-  }, [trade?.inputAmount?.currency])
+  }, [order?.trade?.inputAmount?.currency])
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
@@ -321,7 +353,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     )
   }
 
-  const noRoute = !((trade?.routes?.length ?? 0) > 0) || tradeError
+  const noRoute = (isClassicOrder(order) && !((order.trade?.routes?.length ?? 0) > 0)) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),

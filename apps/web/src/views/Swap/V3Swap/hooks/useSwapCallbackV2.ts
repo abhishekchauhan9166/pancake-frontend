@@ -1,6 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
@@ -10,6 +8,7 @@ import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 
+import { ClassicOrder } from '@pancakeswap/price-api-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { Address } from 'viem'
 import useSendSwapTransaction from './useSendSwapTransaction'
@@ -31,7 +30,7 @@ interface UseSwapCallbackReturns {
 }
 
 interface UseSwapCallbackArgs {
-  trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
+  trade: ClassicOrder['trade'] | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   deadline?: bigint

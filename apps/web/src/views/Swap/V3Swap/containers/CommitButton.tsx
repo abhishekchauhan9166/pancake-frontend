@@ -1,16 +1,13 @@
-import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
-import { TradeType } from '@pancakeswap/swap-sdk-core'
-import { MMCommitTrade } from '../types'
+import { InterfaceOrder, isMMOrder } from 'views/Swap/utils'
 import { MMCommitButton } from './MMCommitButton'
 import { MMCommitButtonV2 } from './MMCommitButtonV2'
 import { SwapCommitButton } from './SwapCommitButton'
 import { SwapCommitButtonV2 } from './SwapCommitButtonV2'
 
-type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
-
 export type CommitButtonProps = {
-  trade: Trade | MMCommitTrade<SmartRouterTrade<TradeType>> | undefined
-  tradeError?: Error
+  order: InterfaceOrder | undefined
+  // trade: Trade | MMCommitTrade<SmartRouterTrade<TradeType>> | undefined
+  tradeError?: Error | null
   tradeLoaded: boolean
   beforeCommit?: () => void
   afterCommit?: () => void
@@ -19,31 +16,29 @@ export type CommitButtonProps = {
 
 export const CommitButton: React.FC<CommitButtonProps> = ({
   useUniversalRouter,
-  trade,
+  order,
   tradeError,
   tradeLoaded,
   beforeCommit,
   afterCommit,
 }) => {
-  if (trade && 'isMMBetter' in trade && trade?.isMMBetter) {
-    const currentTrade = trade
+  if (isMMOrder(order)) {
     return useUniversalRouter ? (
-      <MMCommitButtonV2 {...currentTrade} beforeCommit={beforeCommit} afterCommit={afterCommit} />
+      <MMCommitButtonV2 {...order} beforeCommit={beforeCommit} afterCommit={afterCommit} />
     ) : (
-      <MMCommitButton {...currentTrade} />
+      <MMCommitButton {...order} />
     )
   }
 
-  const currentTrade = trade as SmartRouterTrade<TradeType>
   return useUniversalRouter ? (
     <SwapCommitButtonV2
-      trade={currentTrade}
+      order={order}
       tradeError={tradeError}
       tradeLoading={!tradeLoaded}
       beforeCommit={beforeCommit}
       afterCommit={afterCommit}
     />
   ) : (
-    <SwapCommitButton trade={currentTrade} tradeError={tradeError} tradeLoading={!tradeLoaded} />
+    <SwapCommitButton order={order} tradeError={tradeError} tradeLoading={!tradeLoaded} />
   )
 }
