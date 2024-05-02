@@ -19,6 +19,7 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import { Hash } from 'viem'
 import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
 import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
@@ -52,6 +53,7 @@ type ConfirmSwapModalProps = InjectedModalProps & {
   isRFQReady?: boolean
   currencyBalances?: { [field in Field]?: CurrencyAmount<Currency> }
   txHash?: string
+  orderHash?: Hash
   swapErrorMessage?: string
   onAcceptChanges: () => void
   onConfirm: (setConfirmModalState?: () => void) => void
@@ -68,6 +70,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
   order,
   originalOrder,
   txHash,
+  orderHash,
   currencyBalances,
   openSettingModal,
   onAcceptChanges,
@@ -164,16 +167,20 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
     }
 
     if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
+      let title = txHash ? t('Transaction Submitted') : t('Confirm Swap')
+      if (isXOrder(order)) {
+        title = txHash ? t('Order Filled') : orderHash ? t('Order Submitted') : t('Confirm Swap')
+      }
       return (
         <SwapPendingModalContent
-          title={txHash ? t('Transaction Submitted') : t('Confirm Swap')}
+          title={title}
           currencyA={currencyA}
           currencyB={currencyB}
           amountA={amountA}
           amountB={amountB}
           currentStep={confirmModalState}
         >
-          {showAddToWalletButton && txHash ? (
+          {showAddToWalletButton && (txHash || orderHash) ? (
             <AddToWalletButton
               mt="39px"
               height="auto"
@@ -238,25 +245,26 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
       />
     )
   }, [
-    allowedSlippage,
-    chainId,
-    confirmModalState,
     currencyBalances,
-    handleDismiss,
-    isRFQReady,
-    onAcceptChanges,
-    onConfirm,
-    openSettingModal,
-    originalOrder,
-    pendingModalSteps,
-    recipient,
-    stepContents,
-    swapErrorMessage,
-    t,
-    token,
     order,
+    swapErrorMessage,
+    confirmModalState,
     txHash,
+    isRFQReady,
+    originalOrder,
+    recipient,
+    allowedSlippage,
+    onConfirm,
+    onAcceptChanges,
+    chainId,
+    t,
+    handleDismiss,
+    openSettingModal,
+    stepContents,
+    pendingModalSteps,
     showAddToWalletButton,
+    orderHash,
+    token,
   ])
 
   if (!chainId) return null

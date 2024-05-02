@@ -109,6 +109,7 @@ const useConfirmActions = (
 
   const [confirmState, setConfirmState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined)
+  const [orderHash, setOrderHash] = useState<Hex | undefined>(undefined)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
   const resetState = useCallback(() => {
@@ -320,6 +321,7 @@ const useConfirmActions = (
             orderInfo: order.trade.orderInfo,
           })
           if (xOrder?.hash) {
+            setOrderHash(xOrder.hash)
             const receipt = await waitForXOrderReceipt(xOrder)
 
             if (receipt.transactionHash) {
@@ -389,6 +391,7 @@ const useConfirmActions = (
 
   return {
     txHash,
+    orderHash,
     actions,
 
     confirmState,
@@ -402,7 +405,11 @@ export const useConfirmModalStateV2 = (
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
 ) => {
-  const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(order, amountToApprove, spender)
+  const { actions, confirmState, txHash, orderHash, errorMessage, resetState } = useConfirmActions(
+    order,
+    amountToApprove,
+    spender,
+  )
   const preConfirmState = usePreviousValue(confirmState)
   const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
 
@@ -464,6 +471,7 @@ export const useConfirmModalStateV2 = (
     confirmState,
     resetState,
     txHash,
+    orderHash,
     confirmActions,
   }
 }

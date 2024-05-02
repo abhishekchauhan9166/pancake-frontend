@@ -21,6 +21,7 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee,
   realizedLPFee,
   isMM = false,
+  isX = false,
 }: {
   hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
@@ -30,6 +31,7 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee?: Percent | null
   realizedLPFee?: CurrencyAmount<Currency> | null
   isMM?: boolean
+  isX?: boolean
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -57,39 +59,43 @@ export const TradeSummary = memo(function TradeSummary({
           </Text>
         </RowFixed>
       </RowBetween>
-      {priceImpactWithoutFee && (
-        <RowBetween style={{ padding: '4px 0 0 0' }}>
-          <RowFixed>
-            <Text fontSize="14px" color="textSubtle">
-              {t('Price Impact')}
-            </Text>
-            <QuestionHelper
-              text={
-                <>
-                  <Text>
-                    <Text bold display="inline-block">
-                      {t('AMM')}
-                    </Text>
-                    {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
+      <RowBetween style={{ padding: '4px 0 0 0' }}>
+        <RowFixed>
+          <Text fontSize="14px" color="textSubtle">
+            {t('Price Impact')}
+          </Text>
+          <QuestionHelper
+            text={
+              <>
+                <Text>
+                  <Text bold display="inline-block">
+                    {t('AMM')}
                   </Text>
-                  <Text mt="10px">
-                    <Text bold display="inline-block">
-                      {t('MM')}
-                    </Text>
-                    {`: ${t('No slippage against quote from market maker')}`}
+                  {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
+                </Text>
+                <Text mt="10px">
+                  <Text bold display="inline-block">
+                    {t('MM')}
                   </Text>
-                </>
-              }
-              ml="4px"
-              placement="top"
-            />
-          </RowFixed>
+                  {`: ${t('No slippage against quote from market maker')}`}
+                </Text>
+              </>
+            }
+            ml="4px"
+            placement="top"
+          />
+        </RowFixed>
 
-          {isMM ? <Text color="textSubtle">--</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
-        </RowBetween>
-      )}
+        {isX ? (
+          <Text color="primary">0%</Text>
+        ) : isMM ? (
+          <Text color="textSubtle">--</Text>
+        ) : (
+          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+        )}
+      </RowBetween>
 
-      {realizedLPFee && (
+      {(realizedLPFee || isX) && (
         <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
@@ -136,7 +142,13 @@ export const TradeSummary = memo(function TradeSummary({
               placement="top"
             />
           </RowFixed>
-          <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
+          {isX ? (
+            <Text color="primary" fontSize="14px">
+              0 {inputAmount?.currency?.symbol}
+            </Text>
+          ) : (
+            <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
+          )}
         </RowBetween>
       )}
     </AutoColumn>

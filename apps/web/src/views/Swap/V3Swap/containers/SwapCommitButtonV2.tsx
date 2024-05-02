@@ -161,11 +161,12 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [tradeToConfirm, setTradeToConfirm] = useState<PriceOrder | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
-  const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalStateV2(
-    isExpertMode ? order : tradeToConfirm,
-    amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
-    getUniversalRouterAddress(chainId),
-  )
+  const { callToAction, confirmState, txHash, orderHash, confirmActions, errorMessage, resetState } =
+    useConfirmModalStateV2(
+      isExpertMode ? order : tradeToConfirm,
+      amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
+      getUniversalRouterAddress(chainId),
+    )
 
   const { onUserInput } = useSwapActionHandlers()
   const reset = useCallback(() => {
@@ -207,6 +208,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [openConfirmSwapModal] = useModal(
     <ConfirmSwapModalV2
       order={order}
+      orderHash={orderHash}
       originalOrder={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmState}
