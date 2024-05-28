@@ -1,5 +1,13 @@
 # @pancakeswap/tokens
 
+## 0.6.17
+
+### Patch Changes
+
+- b57fd91: Add ONEPUNCH token on Linea
+- 755bb18: New FURY Token. 2 BSC Farms. 3 zkSync Farms. New Gauges.
+- 502d961: Add MNT and mETH tokens with their farms and gauges on Ethereum
+
 ## 0.6.16
 
 ### Patch Changes
