@@ -1,6 +1,6 @@
-import { useState, useCallback, memo, useMemo } from 'react'
-import { Flex, Card, ButtonTabMenu } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { ButtonTabMenu, Card, Flex } from '@pancakeswap/uikit'
+import { memo, useCallback, useMemo, useState } from 'react'
 import useGelatoLimitOrdersHistory from '../../hooks/useGelatoLimitOrdersHistory'
 
 import { ORDER_CATEGORY } from '../../types'

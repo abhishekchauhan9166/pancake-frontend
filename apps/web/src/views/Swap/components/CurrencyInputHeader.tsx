@@ -1,3 +1,4 @@
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   ChartDisableIcon,
@@ -101,6 +102,10 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
       }
     }, [mobileTooltipClickOutside])
 
+    const { theme } = useTheme()
+
+    const color = theme.isDark ? theme.colors.white : theme.colors.black
+
     const titleContent = (
       <Flex width="100%" alignItems="center" justifyContent="space-between" flexDirection="column">
         <Flex flexDirection="column" alignItems="flex-start" width="100%" marginBottom={15}>
@@ -137,11 +142,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               scale="sm"
               data-dd-action-name="Price chart button"
             >
-              {isChartDisplayed ? (
-                <ChartDisableIcon color="textSubtle" />
-              ) : (
-                <ChartIcon width="24px" color="textSubtle" />
-              )}
+              {isChartDisplayed ? <ChartDisableIcon color={color} /> : <ChartIcon width="24px" color={color} />}
             </ColoredIconButton>
           )}
           {isHotTokenSupported && (
@@ -157,7 +158,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               data-dd-action-name="Hot token list button"
             >
               {isSwapHotTokenDisplay ? (
-                <HotDisableIcon color="textSubtle" width="24px" />
+                <HotDisableIcon color={color} width="24px" />
               ) : (
                 <>
                   <TooltipText
@@ -166,7 +167,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
                     display="flex"
                     style={{ justifyContent: 'center' }}
                   >
-                    <HotIcon color="textSubtle" width="24px" />
+                    <HotIcon color={color} width="24px" />
                   </TooltipText>
                   {tooltipVisible && (!isMobile || mobileTooltipShow) && tooltip}
                 </>
@@ -175,7 +176,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           )}
           <NotificationDot show={expertMode || isRoutingSettingChange}>
             <GlobalSettings
-              color="textSubtle"
+              color={color}
               mr="0"
               mode={SettingsMode.SWAP_LIQUIDITY}
               data-dd-action-name="Swap settings button"
@@ -187,12 +188,12 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
             scale="sm"
             data-dd-action-name="Swap history button"
           >
-            <HistoryIcon color="textSubtle" width="24px" />
+            <HistoryIcon color={color} width="24px" />
           </IconButton>
           <IconButton variant="text" scale="sm" onClick={onRefreshPrice} data-dd-action-name="Swap refresh button">
             <RefreshIcon
               disabled={!hasAmount}
-              color="textSubtle"
+              color={color}
               width="27px"
               duration={chainId && CHAIN_REFRESH_TIME[chainId] ? CHAIN_REFRESH_TIME[chainId] / 1000 : undefined}
             />

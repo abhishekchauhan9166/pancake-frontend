@@ -1,5 +1,6 @@
 export const baseColors = {
   white: "white",
+  black: "black",
   failure: "#ED4B9E",
   failure33: "#ED4B9E33",
   primary: "#1FC7D4",
@@ -12,6 +13,9 @@ export const baseColors = {
   warning: "#FFB237",
   warning2D: "#ED4B9E2D",
   warning33: "#ED4B9E33",
+  lightbg: "#F8F8F8",
+  mainColor: "#E6E51E",
+  lightBlue: "#496AF1",
 };
 
 export const additionalColors = {

@@ -31,11 +31,11 @@ const StyledNav = styled.nav`
   width: 100%;
   height: ${MENU_HEIGHT}px;
   background-color: ${({ theme }) => theme.nav.background};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder}; */
   transform: translate3d(0, 0, 0);
 
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 const FixedContainer = styled("div").withConfig({
@@ -134,6 +134,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   const subLinksWithoutMobile = useMemo(() => subLinks?.filter((subLink) => !subLink.isMobileOnly), [subLinks]);
   const subLinksMobileOnly = useMemo(() => subLinks?.filter((subLink) => subLink.isMobileOnly), [subLinks]);
   const providerValue = useMemo(() => ({ linkComponent }), [linkComponent]);
+
   return (
     <MenuContext.Provider value={providerValue}>
       <AtomBox
@@ -155,7 +156,12 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
               </Flex>
               <Flex alignItems="center" height="100%">
                 <AtomBox mr="12px" display={{ xs: "none", xxl: "block" }}>
-                  <CakePrice chainId={chainId} showSkeleton={false} cakePriceUsd={cakePriceUsd} />
+                  <CakePrice
+                    chainId={chainId}
+                    showSkeleton={false}
+                    cakePriceUsd={cakePriceUsd}
+                    color={isDark ? "white" : "black"}
+                  />
                 </AtomBox>
                 <Box mt="4px">
                   <LangSelector
@@ -163,7 +169,6 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
                     langs={langs}
                     setLang={setLang}
                     buttonScale="xs"
-                    color="textSubtle"
                     hideLanguage
                   />
                 </Box>

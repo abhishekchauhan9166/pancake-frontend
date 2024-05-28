@@ -1,3 +1,4 @@
+import { useTheme } from '@pancakeswap/hooks'
 import { Box } from '@pancakeswap/uikit'
 import { initWeb3InboxClient, useSubscription, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
 import React, { memo, useCallback, useEffect, useState } from 'react'
@@ -34,6 +35,7 @@ const Notifications = () => {
 }
 
 const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
+  const { isDark } = useTheme()
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
 
   const { data: subscription } = useSubscription()
@@ -56,7 +58,7 @@ const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
   }, [isSubscribed])
 
   return (
-    <NotificationMenu viewIndex={viewIndex} subscriptionId={subscription?.topic}>
+    <NotificationMenu viewIndex={viewIndex} subscriptionId={subscription?.topic} isDark={isDark}>
       <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
         <ViewContainer $viewIndex={viewIndex}>
           <OnBoardingView isReady={isSubscribed} isRegistered={isRegistered} />

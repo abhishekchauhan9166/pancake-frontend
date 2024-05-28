@@ -24,7 +24,6 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   pendingReward,
   earningToken,
   refetch,
-  isInCakeRewardDateRange,
   bCakeWrapper,
 }) => {
   const { t } = useTranslation()

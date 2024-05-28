@@ -9,12 +9,14 @@ interface LiquidStakingPageStakeProps {
   selectedList: OptionProps
   optionsList: OptionProps[]
   handleSortOptionChange: (value: any) => void
+  isDark?: boolean
 }
 
 export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
   selectedList,
   optionsList,
   handleSortOptionChange,
+  isDark,
 }) => {
   const { t } = useTranslation()
 
@@ -25,9 +27,10 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
         subtitle={t('Unlock liquidity while earning rewards')}
         title={t('Liquid Staking')}
         noConfig
+        isDark={isDark}
       />
       <CardBody>
-        <Text fontSize="12px" mb="8px" color="secondary" bold textTransform="uppercase">
+        <Text fontSize="12px" mb="8px" color="lightBlue" bold textTransform="uppercase">
           {t('Choose a pair to liquid stake')}
         </Text>
         {optionsList.length > 0 && <Select mb="24px" options={optionsList} onOptionChange={handleSortOptionChange} />}
@@ -35,7 +38,9 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
 
         <Box mb="16px">
           <NextLink href={`/liquid-staking/${selectedList?.contract}`}>
-            <Button width="100%">{t('Proceed')}</Button>
+            <Button width="100%" variant="mainprimary" style={{ borderRadius: '24px' }}>
+              {t('Proceed')}
+            </Button>
           </NextLink>
         </Box>
       </CardBody>

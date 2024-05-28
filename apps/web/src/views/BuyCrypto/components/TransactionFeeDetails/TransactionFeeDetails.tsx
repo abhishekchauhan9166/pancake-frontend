@@ -109,10 +109,10 @@ export const TransactionFeeDetails = ({
 
           {!quotesError && (
             <Flex alignItems="center" justifyContent="center">
-              <Text color="primary" fontWeight="600" fontSize="14px">
+              <Text color="lightBlue" fontWeight="600" fontSize="14px">
                 {!show ? t('Show details') : t('Hide Details')}
               </Text>
-              {!show ? <ArrowDropDownIcon color="primary" /> : <ArrowDropUpIcon color="primary" />}
+              {!show ? <ArrowDropDownIcon color="lightBlue" /> : <ArrowDropUpIcon color="lightBlue" />}
             </Flex>
           )}
         </Flex>

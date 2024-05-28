@@ -1,4 +1,5 @@
 import { PositionDetails } from '@pancakeswap/farms'
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { isStableSwapSupported } from '@pancakeswap/stable-swap-sdk'
 import {
@@ -46,7 +47,9 @@ import useStableConfig, {
 } from 'views/Swap/hooks/useStableConfig'
 
 const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+  background-color: ${({ theme }) => (theme.isDark ? theme.colors.dropdownDeep : theme.colors.white)};
+  border-radius: 4px;
+  margin: 0 10px;
 `
 
 export const StableContextProvider = (props: { pair: LPStablePair; account: string | undefined }) => {
@@ -282,25 +285,41 @@ export default function PoolListPage() {
     })
   }
 
+  const { isDark } = useTheme()
+
+  const StyledCheckbox = styled(Checkbox)`
+    background-color: ${({ theme }) => (theme.isDark ? theme.colors.cardBorder : theme.colors.white)};
+
+    &:hover:not(:disabled):not(:checked) {
+      box-shadow: none;
+    }
+
+    &:checked {
+      background-color: #496af1;
+    }
+  `
+
   return (
     <Page>
       <AppBody
         style={{
           maxWidth: '854px',
         }}
+        isDark={isDark}
       >
         <AppHeader
           title={t('Your Liquidity')}
           subtitle={t('List of your liquidity positions')}
           IconSlot={
             <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
-              <HistoryIcon color="textSubtle" width="24px" />
+              <HistoryIcon color={isDark ? 'white' : 'black'} width="24px" />
             </IconButton>
           }
+          isDark={isDark}
           filter={
             <>
-              <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
-                <Checkbox
+              <Flex as="label" htmlFor="hide-close-positions" alignItems="center" style={{ cursor: 'pointer' }}>
+                <StyledCheckbox
                   id="hide-close-positions"
                   scale="sm"
                   name="confirmed"
@@ -308,7 +327,7 @@ export default function PoolListPage() {
                   checked={hideClosedPositions}
                   onChange={() => setHideClosedPositions((prev) => !prev)}
                 />
-                <Text ml="8px" color="textSubtle" fontSize="14px">
+                <Text ml="8px" color={isDark ? 'white' : 'black'} fontSize="14px">
                   {t('Hide closed positions')}
                 </Text>
               </Flex>
@@ -317,7 +336,7 @@ export default function PoolListPage() {
                 scale="sm"
                 activeIndex={selectedTypeIndex}
                 onItemClick={(index) => setSelectedTypeIndex(index)}
-                variant="subtle"
+                variant="lightBlue"
               >
                 <ButtonMenuItem>{t('All')}</ButtonMenuItem>
                 <ButtonMenuItem>V3</ButtonMenuItem>
@@ -355,9 +374,14 @@ export default function PoolListPage() {
             </Flex>
           )}
         </Body>
-        <CardFooter style={{ textAlign: 'center' }}>
+        <CardFooter style={{ textAlign: 'center', borderTop: 'none' }}>
           <NextLink href="/add" passHref>
-            <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="invertedContrast" />}>
+            <Button
+              id="join-pool-button"
+              width="100%"
+              startIcon={<AddIcon color="black" />}
+              style={{ background: '#E6E51E', boxShadow: 'none', borderRadius: '24px', color: 'black' }}
+            >
               {t('Add Liquidity')}
             </Button>
           </NextLink>

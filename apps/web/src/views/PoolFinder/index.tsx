@@ -1,6 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
 import { AddIcon, Button, ChevronDownIcon, Text, useModal, AutoColumn, ColumnCenter } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { useTheme } from '@pancakeswap/hooks'
 
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -28,7 +29,7 @@ enum Fields {
 }
 
 const StyledButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.input};
+  background-color: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.white)};
   color: ${({ theme }) => theme.colors.text};
   box-shadow: none;
   border-radius: 16px;
@@ -38,6 +39,7 @@ export default function PoolFinder() {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const native = useNativeCurrency()
+  const { isDark } = useTheme()
 
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
   const [currency0, setCurrency0] = useState<Currency | null>(native)
@@ -96,8 +98,13 @@ export default function PoolFinder() {
 
   return (
     <Page>
-      <AppBody>
-        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/liquidity" />
+      <AppBody isDark={isDark}>
+        <AppHeader
+          isDark={isDark}
+          title={t('Import Pool')}
+          subtitle={t('Import an existing pool')}
+          backTo="/liquidity"
+        />
         <AutoColumn style={{ padding: '1rem' }} gap="md">
           <StyledButton
             endIcon={<ChevronDownIcon />}

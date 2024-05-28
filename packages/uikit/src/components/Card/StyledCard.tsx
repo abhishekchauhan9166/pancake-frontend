@@ -1,5 +1,5 @@
 import shouldForwardProp from "@styled-system/should-forward-prop";
-import { styled, css, DefaultTheme } from "styled-components";
+import { DefaultTheme, css, styled } from "styled-components";
 import { space } from "styled-system";
 import { promotedGradient } from "../../util/animationToolkit";
 import { Box } from "../Box";
@@ -34,7 +34,7 @@ const getBorderColor = ({ isActive, isSuccess, isWarning, borderBackground, them
 export const StyledCard = styled.div.withConfig({
   shouldForwardProp,
 })<StyledCardProps>`
-  background: ${getBorderColor};
+  /* background: ${getBorderColor}; */
   border-radius: ${({ theme }) => theme.radii.card};
   color: ${({ theme, isDisabled }) => theme.colors[isDisabled ? "textDisabled" : "text"]};
   overflow: hidden;

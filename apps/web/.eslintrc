@@ -5,6 +5,8 @@
   },
   "extends": ["plugin:@next/next/recommended"],
   "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
     "no-empty-function": 0,
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,

@@ -1,14 +1,5 @@
-import {
-  AptosIcon,
-  BaseIcon,
-  BinanceChainIcon,
-  EthChainIcon,
-  Svg,
-  SvgProps,
-  Text,
-  ZkEVMIcon,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { useTheme } from '@pancakeswap/hooks'
+import { AptosIcon, BaseIcon, BinanceChainIcon, EthChainIcon, Svg, SvgProps, Text, ZkEVMIcon } from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
 import Marquee from 'react-fast-marquee'
 import { styled } from 'styled-components'
@@ -72,7 +63,7 @@ const StyledChainIcon = styled.div`
     width: 100%;
   }
   svg path {
-    fill: ${({ theme }) => theme.colors.invertedContrast};
+    fill: ${({ theme }) => theme.colors.white};
   }
 `
 
@@ -84,26 +75,30 @@ const newsItems = [
         <BinanceChainIcon />
       </StyledChainIcon>
     ),
-    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #F0B90B',
+    background: '#000',
+    // background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #F0B90B',
     iconWidth: '26px',
   },
   {
     key: 'opBNB Chain',
-    component: <BinanceChainIcon color="F0B90B" />,
-    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #333',
+    component: <BinanceChainIcon color="white" />,
+    background: '#000',
+    // background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #333',
     iconWidth: '26px',
-    color: '#F0B90B',
+    color: '#FFF',
   },
   {
     key: 'Aptos',
     component: <AptosIcon />,
-    background: '#17BA92',
+    background: '#000',
+    // background: '#17BA92',
     iconWidth: '22px',
   },
   {
     key: 'Ethereum',
     component: <EthChainIcon />,
-    background: '#627AD8',
+    background: '#000',
+    // background: '#627AD8',
     iconWidth: '16px',
   },
   {
@@ -113,25 +108,29 @@ const newsItems = [
         <ZkEVMIcon />
       </StyledChainIcon>
     ),
-    background: '#AD73DE',
+    background: '#000',
+    // background: '#AD73DE',
     iconWidth: '24px',
   },
   {
     key: 'zkSync Era',
     component: <ZksyncWithOutCircleIcon />,
-    background: '#686EA7',
+    background: '#000',
+    // background: '#686EA7',
     iconWidth: '26px',
   },
   {
     key: 'Arbitrum One',
     component: <ArbitrumIcon />,
-    background: '#6E89AE',
+    background: '#000',
+    // background: '#6E89AE',
     iconWidth: '20px',
   },
   {
     key: 'Linea',
     component: <LineaIcon />,
-    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #81D8EA',
+    background: '#000',
+    // background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #81D8EA',
     iconWidth: '18px',
   },
   {
@@ -141,19 +140,20 @@ const newsItems = [
         <BaseIcon />
       </StyledChainIcon>
     ),
-    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #75A1FF',
+    background: '#000',
+    // background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #75A1FF',
     iconWidth: '20px',
   },
 ]
 
 export const ChainTags: React.FC = () => {
-  const { isMobile } = useMatchBreakpoints()
+  const { theme } = useTheme()
   return (
     <StyledMarquee>
       {newsItems.map((d) => (
-        <TagWrapper style={{ background: d.background }} key={d.key}>
-          {cloneElement(d.component, { width: d.iconWidth, color: 'invertedContrast' })}
-          <Text fontWeight={600} fontSize={isMobile ? '16px' : '20px'} ml="10px" color={d?.color ?? 'invertedContrast'}>
+        <TagWrapper style={{ background: theme.isDark ? theme.colors.tertiary : d.background }} key={d.key}>
+          {cloneElement(d.component, { width: d.iconWidth, color: 'white' })}
+          <Text fontSize={16} ml="10px" color={d?.color ?? 'white'}>
             {d.key}
           </Text>
         </TagWrapper>

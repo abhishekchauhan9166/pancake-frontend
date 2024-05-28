@@ -29,6 +29,7 @@ const NavWrapper = styled(Flex)`
   justify-content: space-between;
   padding: 20px 16px;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 20px 40px;
@@ -54,7 +55,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
     <NavWrapper>
       <Flex>
         <Box>
-          <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
+          <ButtonMenu activeIndex={activeIndex} scale="sm" variant="lightBlue">
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}${stableSwapQuery}`}>
               {t('Overview')}
             </ButtonMenuItem>

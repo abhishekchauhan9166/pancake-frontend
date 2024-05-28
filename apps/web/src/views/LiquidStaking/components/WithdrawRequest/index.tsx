@@ -84,7 +84,7 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
   return (
     <>
       <CardBody>
-        <Text fontSize="12px" mb="8px" color="secondary" bold textTransform="uppercase">
+        <Text fontSize="12px" mb="8px" color="lightBlue" bold textTransform="uppercase">
           {t('Withdraw')}
         </Text>
 

@@ -1,3 +1,4 @@
+import { useTheme } from '@pancakeswap/hooks'
 import { AppBody } from 'components/App'
 import { SNBNB } from 'config/constants/liquidStaking'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
@@ -19,6 +20,8 @@ const LiquidStakingPage = () => {
   // const [selectedTypeIndex, setSelectedTypeIndex] = useState(ACTIONS.STAKE)
   const { chainId } = useActiveChainId()
   const { data: liquidStakingList } = useLiquidStakingList()
+
+  const { isDark } = useTheme()
 
   const initState = useMemo(
     () => ({
@@ -52,12 +55,13 @@ const LiquidStakingPage = () => {
 
   return (
     <Page>
-      <AppBody mb="24px">
+      <AppBody mb="24px" isDark={isDark}>
         {selectedList.token0 && selectedList.token1 ? (
           <LiquidStakingPageStake
             selectedList={selectedList}
             optionsList={optionsList}
             handleSortOptionChange={handleSortOptionChange}
+            isDark={isDark}
           />
         ) : null}
       </AppBody>
@@ -66,7 +70,7 @@ const LiquidStakingPage = () => {
       selectedList.token1 &&
       chainId &&
       selectedList?.contract !== SNBNB[chainId] ? (
-        <AppBody mb="24px">
+        <AppBody mb="24px" isDark={isDark}>
           <WithdrawRequest selectedList={selectedList} />
         </AppBody>
       ) : null}

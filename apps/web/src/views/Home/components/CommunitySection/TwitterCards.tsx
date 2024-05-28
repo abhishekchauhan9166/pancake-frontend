@@ -72,7 +72,7 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `📢Say hello to PancakeSwap v4
+        tweet: `📢Say hello to Merca Dex v4
 🪝Hooks
 🔗Custom Pool Types & Donate
 ⛽️Gas Optimization via Singleton & Flash Accounting
@@ -123,13 +123,13 @@ export const TwitterCards: React.FC = () => {
       </LogoBox>
       <Flex alignItems="center">
         <Text mt="10px" fontSize={14} bold>
-          PancakeSwap🥞Ev3ryone&#39;s Favourite D3X
+          Merca Dex Ev3ryone&#39;s Favourite D3X
         </Text>
         <VerifiedIcon ml="3px" mt="9px" color={theme.colors.secondary} />
       </Flex>
       <Flex style={{ gap: 0 }} alignItems="center" justifyContent="center">
         <StyledText fontSize={14} color={theme.colors.textSubtle}>
-          @PancakeSwap
+          @Merca Dex
         </StyledText>
         <Divider />
         <Text fontSize={14} color={theme.colors.textSubtle}>

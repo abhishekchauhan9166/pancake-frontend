@@ -70,6 +70,7 @@ const config = {
     '@pancakeswap/ifos',
   ],
   reactStrictMode: true,
+  distDir: 'dist',
   swcMinify: true,
   images: {
     contentDispositionType: 'attachment',

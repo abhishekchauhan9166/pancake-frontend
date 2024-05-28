@@ -25,7 +25,6 @@ export const FarmCell = memo(function CardTitle({
   vaultName,
   feeTier,
   isSingleDepositToken,
-  autoFarm,
   autoCompound,
   allowDepositToken1,
   isBooster,

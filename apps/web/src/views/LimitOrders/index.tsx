@@ -358,7 +358,7 @@ const LimitOrders = () => {
         <Flex flexDirection="column" alignItems="center">
           <StyledSwapContainer $isChartExpanded={false}>
             <StyledInputCurrencyWrapper>
-              <AppBody>
+              <AppBody isDark={theme.isDark}>
                 <CurrencyInputHeader
                   title={t('Limit')}
                   subtitle={t('Place a limit order to trade at a set price')}

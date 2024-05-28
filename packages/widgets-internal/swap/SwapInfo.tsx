@@ -1,7 +1,7 @@
+import { useIsMounted, useTheme } from "@pancakeswap/hooks";
 import { useTranslation } from "@pancakeswap/localization";
-import { useIsMounted } from "@pancakeswap/hooks";
+import { AutoColumn, IconButton, PencilIcon, RowBetween, Text, TextProps } from "@pancakeswap/uikit";
 import { PropsWithChildren, ReactNode } from "react";
-import { AutoColumn, RowBetween, Text, TextProps, IconButton, PencilIcon } from "@pancakeswap/uikit";
 
 type SwapInfoType = {
   price: ReactNode;
@@ -10,13 +10,17 @@ type SwapInfoType = {
   allowedSlippageSlot?: React.ReactNode;
 };
 
-export const SwapInfoLabel = (props: PropsWithChildren<TextProps>) => (
-  <Text fontSize="12px" bold color="secondary" {...props} />
-);
+export const SwapInfoLabel = (props: PropsWithChildren<TextProps>) => {
+  const { theme } = useTheme();
+  const color = theme.isDark ? theme.colors.white : theme.colors.black;
+  return <Text fontSize="12px" color={color} {...props} />;
+};
 
 export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlippageSlot }: SwapInfoType) => {
   const { t } = useTranslation();
   const isMounted = useIsMounted();
+  const { theme } = useTheme();
+  const color = theme.isDark ? theme.colors.white : theme.colors.black;
 
   return (
     <AutoColumn gap="sm" py="0px" px="16px">
@@ -32,16 +36,11 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
                 onClick={onSlippageClick}
                 data-dd-action-name="Swap slippage button"
               >
-                <PencilIcon color="primary" width="10px" />
+                <PencilIcon color={color} width="10px" />
               </IconButton>
             ) : null}
           </SwapInfoLabel>
-          {isMounted &&
-            (allowedSlippageSlot ?? (
-              <Text bold color="primary">
-                {allowedSlippage / 100}%
-              </Text>
-            ))}
+          {isMounted && (allowedSlippageSlot ?? <Text color={color}>{allowedSlippage / 100}%</Text>)}
         </RowBetween>
       )}
     </AutoColumn>

@@ -4,10 +4,10 @@ export const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   margin-top: ${({ show }) => (show ? '16px' : 0)};
   padding-top: 16px;
   padding-bottom: 16px;
-  width: 100%;
-  max-width: 400px;
+  width: 300px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.invertedContrast};
+  margin: 16px auto;
 
   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
   transition: transform 300ms ease-in-out;

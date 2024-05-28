@@ -39,7 +39,6 @@ function OnRampCurrencySearch({
   selectedCurrency,
   onCurrencySelect,
   otherSelectedCurrency,
-  height,
   tokensToShow,
   mode,
   onRampFlow,

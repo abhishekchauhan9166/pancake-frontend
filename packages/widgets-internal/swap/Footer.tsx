@@ -1,7 +1,7 @@
-import { memo, ReactNode } from "react";
-import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { LinkExternal, Flex, Svg, Image, Button } from "@pancakeswap/uikit";
+import { Button, Flex, Image, Svg } from "@pancakeswap/uikit";
+import { ReactNode, memo } from "react";
+import { styled } from "styled-components";
 
 const Wrapper = styled.div<{ $isSide: boolean }>`
   width: 100%;
@@ -48,15 +48,15 @@ const Footer: React.FC<
 > = ({
   variant = "default",
   helpUrl,
-  externalText,
-  externalLinkUrl,
-  helpImage = <Image src="https://cdn.pancakeswap.com/help/help.png" alt="Get some help" width={160} height={108} />,
+  // externalText,
+  // externalLinkUrl,
+  helpImage = <Image src="/images/mercadex/Help.png" alt="Get some help" width={200} height={200} />,
 }) => {
   const { t } = useTranslation();
   const isSide = variant === "side";
   return (
     <Wrapper $isSide={isSide}>
-      {externalText && externalLinkUrl && (
+      {/* {externalText && externalLinkUrl && (
         <Flex flexDirection={isSide ? "column" : ["column", "column", "row"]} alignItems="center">
           <LinkExternal
             id="ercBridge"
@@ -68,7 +68,7 @@ const Footer: React.FC<
             {externalText}
           </LinkExternal>
         </Flex>
-      )}
+      )} */}
       {isSide && <Flex flexGrow={1} />}
       {helpUrl && (
         <Flex
@@ -77,12 +77,26 @@ const Footer: React.FC<
           width={["100%", "100%", "100%", isSide ? "100%" : "auto"]}
           justifyContent={["center", "center", "center", "flex-end"]}
         >
-          <BubbleWrapper>
-            <Button id="clickExchangeHelp" as="a" external href={helpUrl} variant="subtle">
+          <BubbleWrapper style={{ marginRight: "-50px", marginBottom: "30px" }}>
+            <Button
+              id="clickExchangeHelp"
+              as="a"
+              external
+              href={helpUrl}
+              variant="subtle"
+              style={{
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                boxShadow: "none",
+                background: "black",
+                color: "white",
+              }}
+            >
               {t("Need help ?")}
             </Button>
-            <Svg viewBox="0 0 16 16">
-              <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
+            <Svg viewBox="0 0 16 16" style={{ marginLeft: "-1px" }}>
+              <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" fill="black" />
             </Svg>
           </BubbleWrapper>
           {helpImage}

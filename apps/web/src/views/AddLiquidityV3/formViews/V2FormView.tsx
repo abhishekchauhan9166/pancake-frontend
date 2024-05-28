@@ -142,7 +142,7 @@ export default function V2FormView({
     <>
       <AutoColumn>
         <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-          {t('Deposit Amount')}
+          {/* {t('Deposit Amount')} */}
         </Text>
 
         <Box mb="8px">

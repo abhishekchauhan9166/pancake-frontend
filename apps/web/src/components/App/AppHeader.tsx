@@ -1,17 +1,17 @@
-import { styled, css } from 'styled-components'
 import {
-  Text,
+  ArrowBackIcon,
+  AutoRow,
   Flex,
   Heading,
   IconButton,
-  ArrowBackIcon,
   NotificationDot,
   QuestionHelper,
-  AutoRow,
+  Text,
 } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
+import { css, styled } from 'styled-components'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {
@@ -25,6 +25,7 @@ interface Props {
   filter?: React.ReactNode
   shouldCenter?: boolean
   borderHidden?: boolean
+  isDark?: boolean
 }
 
 const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
@@ -32,7 +33,7 @@ const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
   justify-content: space-between;
   padding: 24px;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder}; */
 
   ${({ borderHidden }) =>
     borderHidden &&
@@ -44,7 +45,7 @@ const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
 const FilterSection = styled(AutoRow)`
   padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  /* border-top: 1px solid ${({ theme }) => theme.colors.cardBorder}; */
 `
 
 const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
@@ -58,6 +59,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
   filter,
   shouldCenter = false,
   borderHidden = false,
+  isDark,
 }) => {
   const [expertMode] = useExpertMode()
 
@@ -86,7 +88,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
               <Flex alignItems="flex-end">
                 {IconSlot}
                 <NotificationDot show={expertMode}>
-                  <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
+                  <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} color={isDark ? 'white' : 'black'} />
                 </NotificationDot>
               </Flex>
             )}
@@ -99,7 +101,11 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
           </Flex>
           {subtitle && (
             <Flex alignItems="center" justifyContent={shouldCenter ? 'center' : ''}>
-              <Text textAlign={shouldCenter ? 'center' : 'inherit'} color="textSubtle" fontSize="14px">
+              <Text
+                textAlign={shouldCenter ? 'center' : 'inherit'}
+                color={isDark ? 'textSubtle' : 'black'}
+                fontSize="14px"
+              >
                 {subtitle}
               </Text>
             </Flex>

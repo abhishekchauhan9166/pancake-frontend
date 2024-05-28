@@ -122,7 +122,7 @@ export const BuyCryptoSelector = ({
               <Skeleton width="105px" height="26px" variant="round" isDark />
             </Flex>
           )}
-          {selectedCurrency && <ArrowDropDownIcon color="primary" />}
+          {selectedCurrency && <ArrowDropDownIcon color="lightBlue" />}
         </OptionSelectButton>
       </DropDownContainer>
     </Box>

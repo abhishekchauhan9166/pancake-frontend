@@ -1,7 +1,7 @@
-import { styled } from 'styled-components'
-import { Card, CardBody, Text, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Card, CardBody, Flex, Link, Text } from '@pancakeswap/uikit'
 import FoldableText from 'components/FoldableSection/FoldableText'
+import { styled } from 'styled-components'
 
 const Container = styled(Flex)`
   padding: 48px 16px;
@@ -62,7 +62,7 @@ const Questions = () => {
                   external
                   href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/fees-and-routes#check-the-fee-rate-and-fee-amount-that-is-currently-applied"
                 >
-                  <Text color="primary" ml="4px" as="span">
+                  <Text color="lightBlue" ml="4px" as="span">
                     {t('this tutorial')}
                   </Text>
                 </Link>

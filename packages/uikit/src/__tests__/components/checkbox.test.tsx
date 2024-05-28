@@ -57,7 +57,7 @@ it("renders correctly", () => {
     }
 
     .c0:checked:after {
-      border-color: white;
+      // border-color: white;
     }
 
     .c0:disabled {

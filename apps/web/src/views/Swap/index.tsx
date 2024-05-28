@@ -8,6 +8,7 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
+import { useTheme } from '@pancakeswap/hooks'
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
@@ -34,6 +35,7 @@ export default function Swap() {
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
   const [firstTime, setFirstTime] = useState(true)
+  const { isDark } = useTheme()
 
   useEffect(() => {
     if (firstTime && query.showTradingReward) {
@@ -144,7 +146,7 @@ export default function Swap() {
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
-              <AppBody>
+              <AppBody isDark={isDark}>
                 <V3SwapForm />
               </AppBody>
             </StyledInputCurrencyWrapper>

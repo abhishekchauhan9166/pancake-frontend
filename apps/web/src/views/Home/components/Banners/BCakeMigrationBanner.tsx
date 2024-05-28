@@ -49,7 +49,7 @@ export const BCakeMigrationBanner = () => {
   const { theme } = useTheme()
   const readWhitepaperAction = (
     <StyledButtonLinkAction
-      style={{ background: theme.colors.primary }}
+      style={{ background: theme.colors.mainColor }}
       color="white"
       href={migrationLink}
       padding={['8px 12px']}
@@ -62,7 +62,7 @@ export const BCakeMigrationBanner = () => {
     <StyledButtonLinkAction
       fontSize={['14px']}
       style={{ background: theme.colors.tertiary }}
-      color={theme.colors.primary}
+      color={theme.colors.mainColor}
       href={learnMoreLink}
       endIcon={null}
       padding={['8px 12px']}

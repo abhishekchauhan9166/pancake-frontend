@@ -1,8 +1,9 @@
+import { ChainId } from '@pancakeswap/chains'
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Swap } from '@pancakeswap/widgets-internal'
-import { ChainId } from '@pancakeswap/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { EXCHANGE_HELP_URLS } from 'config/constants'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const Page: React.FC<
   React.PropsWithChildren<{
@@ -25,6 +26,8 @@ const Page: React.FC<
   const externalText = isBSC ? t('Bridge assets to BNB Chain') : ''
   const externalLinkUrl = isBSC ? 'https://bridge.pancakeswap.finance/' : ''
 
+  const { theme } = useTheme()
+
   return (
     <Swap.Page
       removePadding={removePadding}
@@ -34,6 +37,7 @@ const Page: React.FC<
       externalText={externalText}
       externalLinkUrl={externalLinkUrl}
       {...props}
+      style={{ background: theme.isDark ? theme.colors.gradientBubblegum : theme.colors.white }}
     >
       {children}
     </Swap.Page>

@@ -39,10 +39,10 @@ export const Contribute = () => {
               lineHeight={['28px', '28px', '28px', '28px', '32px']}
               textAlign={['center', 'center', 'center', 'center', 'left']}
             >
-              {t('Contribute to PancakeSwap v4')}
+              {t('Contribute to Merca Dex v4')}
             </Text>
             <Text lineHeight="24px" textAlign={['center', 'center', 'center', 'center', 'left']} m={['16px 0 32px 0']}>
-              {t(`Build Hooks with us and participate in PancakeSwap's 500k USD Developer Program`)}
+              {t(`Build Hooks with us and participate in Merca Dex's 500k USD Developer Program`)}
             </Text>
             <Flex flexDirection={['column', 'column', 'row']} margin={['auto', 'auto', 'auto', '0']}>
               <NextLinkFromReactRouter

@@ -215,13 +215,13 @@ export function BuyCryptoForm() {
             btcAddress={debouncedQuery}
             errorText={amountError}
           />
-          <Flex alignItems="center" justifyContent="center">
+          <Flex alignItems="center" justifyContent="center" marginTop={12}>
             <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
               {t('By continuing you agree to our')}{' '}
             </Text>
             <Link
-              color={theme.colors.primary}
-              style={{ color: `${theme.colors.primary}` }}
+              color={theme.colors.lightBlue}
+              style={{ color: `${theme.colors.lightBlue}` }}
               display="flex"
               fontSize="14px"
               href="https://pancakeswap.finance/terms-of-service"

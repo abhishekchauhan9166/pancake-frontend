@@ -1,3 +1,4 @@
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, CardBody, Flex, Image, RowBetween, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -30,6 +31,8 @@ const LiquidStakingStakePage = () => {
   const [stakeAmount, setStakeAmount] = useState('')
   const [showPage, setShowPage] = useState(false)
   const [selectedList, setSelectedList] = useState<null | LiquidStakingList>(null)
+
+  const { isDark } = useTheme()
 
   useEffect(() => {
     const contract: string = (router?.query?.contract as string) ?? ''
@@ -73,13 +76,14 @@ const LiquidStakingStakePage = () => {
 
   return (
     <Page>
-      <AppBody mb="24px">
+      <AppBody mb="24px" isDark={isDark}>
         <AppHeader
           backTo="/liquid-staking"
           subtitle={t('Unlock liquidity while earning rewards')}
           title={t('Liquid Staking')}
           noConfig
           shouldCenter
+          isDark={isDark}
         />
         <CardBody>
           <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">

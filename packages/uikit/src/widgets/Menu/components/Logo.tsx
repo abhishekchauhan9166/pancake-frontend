@@ -1,7 +1,7 @@
+import useTheme from "hooks/useTheme";
 import React, { useContext } from "react";
 import { keyframes, styled } from "styled-components";
 import Flex from "../../../components/Box/Flex";
-import { LogoIcon, LogoWithTextIcon } from "../../../components/Svg";
 import { MenuContext } from "../context";
 
 interface Props {
@@ -44,10 +44,22 @@ const StyledLink = styled("a")`
 const Logo: React.FC<React.PropsWithChildren<Props>> = ({ href }) => {
   const { linkComponent } = useContext(MenuContext);
   const isAbsoluteUrl = href.startsWith("http");
+
+  const { isDark } = useTheme();
   const innerLogo = (
     <>
-      <LogoIcon className="mobile-icon" />
-      <LogoWithTextIcon className="desktop-icon" />
+      {/* <LogoIcon className="mobile-icon" /> */}
+      {/* <LogoWithTextIcon className="desktop-icon" /> */}
+      <div className="desktop-icon">
+        {isDark ? (
+          <img src="/images/mercadex/Logowithtext-light.png" width={150} height={40} alt="Logowithtext" />
+        ) : (
+          <img src="/images/mercadex/Logowithtext.png" width={150} height={40} alt="Logowithtext" />
+        )}
+      </div>
+      <div className="mobile-icon">
+        <img src="/images/mercadex/Logo.png" width={50} height={40} alt="Logo" />
+      </div>
     </>
   );
 

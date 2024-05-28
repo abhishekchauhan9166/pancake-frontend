@@ -1,5 +1,6 @@
-import { Text, AtomBox, SwapCSS } from "@pancakeswap/uikit";
+import { AtomBox, SwapCSS, Text } from "@pancakeswap/uikit";
 
+import { useTheme } from "@pancakeswap/hooks";
 import { NumericalInput, NumericalInputProps } from "./NumericalInput";
 
 interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
@@ -21,6 +22,7 @@ export function CurrencyInputPanel({
   loading,
   showBridgeWarning,
 }: CurrencyInputPanelProps) {
+  const { theme } = useTheme();
   return (
     <AtomBox position="relative" id={id} display="grid" gap="4px">
       <AtomBox display="flex" alignItems="center" justifyContent="space-between">
@@ -31,7 +33,7 @@ export function CurrencyInputPanel({
         flexDirection="column"
         flexWrap="nowrap"
         position="relative"
-        backgroundColor="backgroundAlt"
+        // backgroundColor="backgroundAlt"
         zIndex="1"
       >
         <AtomBox
@@ -40,6 +42,7 @@ export function CurrencyInputPanel({
             showBridgeWarning: !!showBridgeWarning,
             error: Boolean(error),
           })}
+          style={{ background: theme.isDark ? theme.colors.input : theme.colors.white }}
         >
           <AtomBox
             display="flex"
@@ -61,6 +64,7 @@ export function CurrencyInputPanel({
               onUserInput={(val) => {
                 onUserInput(val);
               }}
+              style={{ border: "none", outline: "none", width: "100%", textAlign: "right", background: "transparent" }}
             />
           </AtomBox>
           {bottom}

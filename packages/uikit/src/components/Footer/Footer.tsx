@@ -1,4 +1,5 @@
 import { useIsMounted } from "@pancakeswap/hooks";
+// import Image from "next/image";
 import React from "react";
 import { useMatchBreakpoints } from "../../contexts";
 import { Box, Flex } from "../Box";
@@ -17,7 +18,7 @@ import { vars } from "../../css/vars.css";
 import { Button } from "../Button";
 import CakePrice from "../CakePrice/CakePrice";
 import LangSelector from "../LangSelector/LangSelector";
-import { ArrowForwardIcon, LogoIcon, LogoWithTextIcon } from "../Svg";
+import { ArrowForwardIcon, LogoIcon } from "../Svg";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { FooterProps } from "./types";
 
@@ -46,7 +47,8 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
     >
       <Flex flexDirection="column" width={["100%", null, "1200px;"]}>
         <StyledIconMobileContainer display={["block", null, "none"]}>
-          <LogoWithTextIcon width="130px" />
+          {/* <LogoWithTextIcon width="130px" /> */}
+          <img src="/images/mercadex/Logowithtext-light.png" width={130} height={30} alt="Logowithtext" />
         </StyledIconMobileContainer>
         <Flex
           order={[2, null, 1]}
@@ -78,7 +80,13 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               ))}
             </StyledList>
           ))}
-          <Box display={["none", null, "block"]}>{isXl ? <LogoIcon /> : <LogoWithTextIcon width="160px" />}</Box>
+          <Box display={["none", null, "block"]}>
+            {isXl ? (
+              <img src="/images/mercadex/Logo.png" width={24} height={24} alt="Logo" />
+            ) : (
+              <img src="/images/mercadex/Logowithtext-light.png" width={150} height={40} alt="Logowithtext" />
+            )}
+          </Box>
         </Flex>
         <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
         <StyledToolsContainer
@@ -108,6 +116,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               target="_blank"
               scale="sm"
               endIcon={<ArrowForwardIcon color="backgroundAlt" />}
+              variant="mainprimary"
             >
               {buyCakeLabel}
             </Button>

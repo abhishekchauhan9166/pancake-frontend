@@ -83,7 +83,12 @@ const ConnectButtonReplace = ({ children }) => {
   const { address: account } = useAccount()
 
   if (!account) {
-    return <ConnectWalletButton width="100%" />
+    return (
+      <ConnectWalletButton
+        width="100%"
+        style={{ background: '#E6E51E', borderRadius: '24px', boxShadow: 'none', color: '#000' }}
+      />
+    )
   }
   return children
 }

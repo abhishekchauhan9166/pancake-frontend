@@ -25,6 +25,7 @@ const config = (t) => [
           style={{ display: 'inline-flex' }}
           href="https://docs.pancakeswap.finance/products/buy-crypto"
           showExternalIcon={false}
+          color="lightBlue"
         >
           {t('documentation')}
         </LinkExternal>{' '}
@@ -32,6 +33,7 @@ const config = (t) => [
         <LinkExternal
           style={{ display: 'inline-flex' }}
           href="https://help.mercuryo.io/en/articles/6122838-on-and-off-ramps"
+          color="lightBlue"
         >
           {t('partners documentation')}
         </LinkExternal>{' '}
@@ -48,6 +50,7 @@ const config = (t) => [
           style={{ display: 'inline-flex' }}
           href="https://docs.pancakeswap.finance/products/buy-crypto"
           showExternalIcon={false}
+          color="lightBlue"
         >
           {t('here.')}
         </LinkExternal>

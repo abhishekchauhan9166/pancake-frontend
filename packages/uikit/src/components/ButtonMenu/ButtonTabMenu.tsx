@@ -38,8 +38,8 @@ const ButtonTabMenu: React.FC<React.PropsWithChildren<ButtonTabMenuProps>> = ({
           <ButtonMenuItem
             key={content}
             style={{
-              color: idx === activeIndex ? theme.colors.text : theme.colors.textSubtle,
-              backgroundColor: idx === activeIndex ? theme.card.background : theme.colors.input,
+              color: idx === activeIndex ? theme.colors.white : theme.colors.textSubtle,
+              backgroundColor: idx === activeIndex ? theme.colors.lightBlue : theme.colors.input,
             }}
           >
             {content}

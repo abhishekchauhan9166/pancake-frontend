@@ -26,7 +26,7 @@ import { atom, useAtom } from 'jotai'
 import { styled } from 'styled-components'
 import Page from 'views/Page'
 
-import { usePreviousValue } from '@pancakeswap/hooks'
+import { usePreviousValue, useTheme } from '@pancakeswap/hooks'
 import { useCurrency } from 'hooks/Tokens'
 import AddLiquidity from 'views/AddLiquidity'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
@@ -387,6 +387,7 @@ export function AddLiquidityV3Layout({
   children: React.ReactNode
 }) {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
 
   const [selectType] = useAtom(selectTypeAtom)
   const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
@@ -419,6 +420,7 @@ export function AddLiquidityV3Layout({
         <AppHeader
           title={title}
           backTo={backToLink}
+          isDark={isDark}
           IconSlot={
             <>
               {selectType === SELECTOR_TYPE.V3 && (

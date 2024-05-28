@@ -182,7 +182,7 @@ const NextDrawCard = () => {
                     width="fit-content"
                     p="0"
                     mb={['32px', null, null, '0']}
-                    variant="text"
+                    variant="mainprimary"
                     scale="sm"
                   >
                     {t('View your tickets')}

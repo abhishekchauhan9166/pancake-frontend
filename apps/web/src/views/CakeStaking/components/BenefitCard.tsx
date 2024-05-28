@@ -109,7 +109,7 @@ export const BenefitCard: React.FC<{
   const button = comingSoon ? (
     comingSoonButton
   ) : info.btnText ? (
-    <Button width="100%" mt="auto" variant={onClick ? 'primary' : 'secondary'} onClick={onClick}>
+    <Button width="100%" mt="auto" variant={onClick ? 'mainprimary' : 'secondary'} onClick={onClick}>
       {info.btnText}
     </Button>
   ) : null

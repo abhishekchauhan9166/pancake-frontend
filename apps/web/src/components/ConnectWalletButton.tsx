@@ -12,6 +12,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useMemo, useState } from 'react'
 import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import { useConnect } from 'wagmi'
+import styled from 'styled-components'
 import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
@@ -35,13 +36,17 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
     }
   }
 
+  const StyledButton = styled(Button)`
+    border-radius: 24px;
+  `
+
   const wallets = useMemo(() => createWallets(chainId || ChainId.BSC, connectAsync), [chainId, connectAsync])
 
   return (
     <>
-      <Button onClick={handleClick} {...props}>
+      <StyledButton onClick={handleClick} variant="mainprimary" {...props}>
         {children || <Trans>Connect Wallet</Trans>}
-      </Button>
+      </StyledButton>
       <style jsx global>{`
         w3m-modal {
           position: relative;

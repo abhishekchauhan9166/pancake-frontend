@@ -6,7 +6,7 @@ export const staticThirdPartyNews: V4ArticleDataType[] = [
     id: -1,
     title: 'ETHGlobal London',
     description:
-      'PancakeSwap is the official partner of ETHGlobal London 2024. Hosting our first-ever hackathon featuring a $10,000 prize pool, where developers can showcase their creativity by building innovative hooks and win rewards.',
+      'Merca Dex is the official partner of ETHGlobal London 2024. Hosting our first-ever hackathon featuring a $10,000 prize pool, where developers can showcase their creativity by building innovative hooks and win rewards.',
     createAt: '2024-03-15',
     categories: [],
     content: '',

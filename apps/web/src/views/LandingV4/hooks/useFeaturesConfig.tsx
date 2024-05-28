@@ -23,7 +23,7 @@ export const useFeaturesConfig = () => {
         title: t('Hooks'),
         icon: <HooksIcon color="secondary" width={iconSize} height={iconSize} />,
         subTitle: t(
-          "Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with PancakeSwap's Hooks!",
+          "Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with Merca Dex's Hooks!",
         ),
         imgUrl: `${ASSET_CDN}/web/v4-landing/feature-1.png`,
       },
@@ -32,7 +32,7 @@ export const useFeaturesConfig = () => {
         title: t('Customized Pool Types'),
         icon: <PoolTypeIcon color="secondary" width={iconSize} height={iconSize} />,
         subTitle: t(
-          "Explore a modular and sustainable design for AMMs, supporting multiple pool types and AMM logic through Hooks and gas optimization. Launching with CLAMM pools featuring Hooks and the first-ever liquidity book AMM, PancakeSwap v4's architecture ensures future-proof deployment of sophisticated AMM logic.",
+          "Explore a modular and sustainable design for AMMs, supporting multiple pool types and AMM logic through Hooks and gas optimization. Launching with CLAMM pools featuring Hooks and the first-ever liquidity book AMM, Merca Dex v4's architecture ensures future-proof deployment of sophisticated AMM logic.",
         ),
         imgUrl: `${ASSET_CDN}/web/v4-landing/feature-2.png`,
       },

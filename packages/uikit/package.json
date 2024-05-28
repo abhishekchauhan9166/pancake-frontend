@@ -37,6 +37,9 @@
   "repository": "https://github.com/pancakeswap/pancake-frontend/tree/develop/packages/uikit",
   "license": "MIT",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build:uikit": "vite build",
     "dev": "vite build --watch --mode development",

@@ -65,9 +65,7 @@ export const StyledFeesContainer3 = styled(Flex)`
   padding: 2px 16px;
   border-radius: 16px;
   z-index: 10;
-  // background: ${({ theme }) => theme.colors.backgroundAlt};
-  background: ${({ theme }) => theme.colors.input};
-
+  background: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.white)};
   border: ${({ theme }) => `1.5px dashed ${theme.colors.inputSecondary}`};
   &:hover {
     cursor: pointer;
@@ -151,7 +149,7 @@ export const DropDownContainer = styled.div<{ error: boolean }>`
   box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
   border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
   border-radius: 16px;
-  background: ${({ theme }) => theme.colors.input};
+  background: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.white)};
   cursor: pointer;
   position: relative;
   min-width: 136px;

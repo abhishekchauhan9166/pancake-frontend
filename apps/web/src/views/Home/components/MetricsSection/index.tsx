@@ -1,72 +1,67 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useQuery } from '@tanstack/react-query'
-import { ASSET_CDN } from 'config/constants/endpoints'
-import Image from 'next/legacy/image'
-import { styled } from 'styled-components'
+import { Flex } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import { ChainTags } from './ChainTags'
-import { MetricsCard } from './MetricsCard'
 
-const ImageLayer = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  overflow: hidden;
-  display: none;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: block;
-  }
-`
-const BnbBallRocket = styled.div`
-  position: absolute;
-  left: -65px;
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    bottom: 151px;
-    left: 20px;
-  }
-`
-const EthBallRocket = styled.div`
-  position: absolute;
-  right: 0;
-  top: 81px;
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    right: 0;
-    bottom: -30px;
-  }
-`
+// const ImageLayer = styled.div`
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   top: 0;
+//   left: 0;
+//   pointer-events: none;
+//   overflow: hidden;
+//   display: none;
+//   ${({ theme }) => theme.mediaQueries.lg} {
+//     display: block;
+//   }
+// `
+// const BnbBallRocket = styled.div`
+//   position: absolute;
+//   left: -65px;
+//   ${({ theme }) => theme.mediaQueries.xxl} {
+//     bottom: 151px;
+//     left: 20px;
+//   }
+// `
+// const EthBallRocket = styled.div`
+//   position: absolute;
+//   right: 0;
+//   top: 81px;
+//   ${({ theme }) => theme.mediaQueries.xxl} {
+//     right: 0;
+//     bottom: -30px;
+//   }
+// `
 
-const AptosBallRocket = styled.div`
-  position: absolute;
-  top: 0px;
-  right: 98px;
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    top: 72px;
-    right: 119px;
-  }
-`
+// const AptosBallRocket = styled.div`
+//   position: absolute;
+//   top: 0px;
+//   right: 98px;
+//   ${({ theme }) => theme.mediaQueries.xxl} {
+//     top: 72px;
+//     right: 119px;
+//   }
+// `
 
 const Stats = () => {
-  const { t } = useTranslation()
-  const { data: tvl = 0 } = useQuery<number>({
-    queryKey: ['tvl'],
-    enabled: false,
-  })
-  const { data: txCount = 0 } = useQuery<number>({
-    queryKey: ['totalTx30Days'],
-    enabled: false,
-  })
-  const { data: addressCount = 0 } = useQuery<number>({
-    queryKey: ['addressCount30Days'],
-    enabled: false,
-  })
-  const { isMobile, isSm, isMd, isXxl } = useMatchBreakpoints()
+  // const { t } = useTranslation()
+  // const { data: tvl = 0 } = useQuery<number>({
+  //   queryKey: ['tvl'],
+  //   enabled: false,
+  // })
+  // const { data: txCount = 0 } = useQuery<number>({
+  //   queryKey: ['totalTx30Days'],
+  //   enabled: false,
+  // })
+  // const { data: addressCount = 0 } = useQuery<number>({
+  //   queryKey: ['addressCount30Days'],
+  //   enabled: false,
+  // })
+  // const { isMobile, isSm, isMd, isXxl } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column" overflow="hidden">
-      <Text textAlign="center" lineHeight="110%" fontWeight={600} mb="4px" fontSize={isMobile ? '20px' : '32px'}>
+      {/* <Text textAlign="center" lineHeight="110%" fontWeight={600} mb="4px" fontSize={isMobile ? '20px' : '32px'}>
         {t('Shaping the Future of Decentralized Trading:')}
       </Text>
       <Text
@@ -76,7 +71,7 @@ const Stats = () => {
         fontSize={isMobile ? '20px' : '32px'}
         mb={isMobile ? '32px' : '48px'}
       >
-        {t('PancakeSwap’s Unstoppable Expansion')}
+        {t('Merca Dex Unstoppable Expansion')}
       </Text>
       <Flex
         justifyContent="center"
@@ -95,9 +90,15 @@ const Stats = () => {
         />
         <MetricsCard title={t('Total Trades:')} value={txCount} description={t('in the last 30 days')} />
         <MetricsCard title={t('Total Value Locked:')} value={tvl} description={t('in the last 30 days')} prefix="$" />
-      </Flex>
-      <ChainTags />
-      <ImageLayer>
+      </Flex> */}
+
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '50px' }}>
+        <Image src="/images/mercadex/hero.png" alt="hero" width={700} height={150} unoptimized />
+      </div>
+      <div>
+        <ChainTags />
+      </div>
+      {/* <ImageLayer>
         <BnbBallRocket>
           <Image
             src={`${ASSET_CDN}/web/landing/bnb-ball-rocket.png`}
@@ -125,7 +126,7 @@ const Stats = () => {
             unoptimized
           />
         </AptosBallRocket>
-      </ImageLayer>
+      </ImageLayer> */}
     </Flex>
   )
 }

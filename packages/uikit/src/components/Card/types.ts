@@ -33,4 +33,5 @@ export interface CardProps extends SpaceProps, HTMLAttributes<HTMLDivElement> {
   borderBackground?: string;
   background?: string;
   innerCardProps?: BoxProps;
+  isDark?: boolean;
 }

@@ -1,4 +1,4 @@
-import { Flex, IconButton, CogIcon, useModal, ButtonProps } from '@pancakeswap/uikit'
+import { ButtonProps, CogIcon, Flex, IconButton, useModal } from '@pancakeswap/uikit'
 
 import SettingsModal from './SettingsModal'
 
@@ -21,7 +21,7 @@ const GlobalSettings = ({ color, mr = '8px', mode, ...rest }: Props) => {
         id={`open-settings-dialog-button-${mode}`}
         {...rest}
       >
-        <CogIcon height={24} width={24} color={color || 'textSubtle'} />
+        <CogIcon height={24} width={24} color={color || '#000'} />
       </IconButton>
     </Flex>
   )

@@ -1,5 +1,5 @@
-import { styled } from 'styled-components'
 import { Card, CardProps } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -11,6 +11,10 @@ export const BodyWrapper = styled(Card)`
 /**
  * The styled container element that wraps the content of most pages and the tabs.
  */
-export default function AppBody({ children, ...cardProps }: { children: React.ReactNode } & CardProps) {
-  return <BodyWrapper {...cardProps}>{children}</BodyWrapper>
+export default function AppBody({ children, isDark, ...cardProps }: { children: React.ReactNode } & CardProps) {
+  return (
+    <BodyWrapper {...cardProps} background={isDark ? '#27262c' : '#F8F8F8'}>
+      {children}
+    </BodyWrapper>
+  )
 }
